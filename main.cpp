@@ -185,39 +185,7 @@ float **revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 
 	return mass;
 }
-/*
-bool myrevers(float ** mass, float ** matrix1, unsigned int &rows1) {
-	int  schet = 0;
 
-	int i, j, k;
-
-	/////////новая матрица
-	for (i = 0; i < rows1; i++) {			//1 0 0
-		mass[i] = new float[rows1];			//0 1 0
-											//0 0 1
-		for (j = 0; j < rows1; j++) {
-			mass[i][j] = 0;
-			mass[i][i] = 1;
-		}
-	}
-
-	float ** matrix = new float *[rows1];
-
-	//заполняем его значениями итогого массива
-	for (int i = 0; i < rows1; i++) {
-		for (int j = 0; j < rows1; j++) {
-			for (int k = 0; k < rows1; k++) {
-				mass[i][j] = mass[i][j] + (matrix1[i][k] * matrix[k][j]);
-			}
-
-			schet++;
-		}
-	}
-
-	schet = 0;
-	return true;
-}
-*/
 void error() {
 	cout << '\n' << "An error has occured while reading input data";
 }
