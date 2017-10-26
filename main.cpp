@@ -178,7 +178,7 @@ float **revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 	cout << '\n';
 	for (int i = 0; i < rows1; i++) {
 		for (int j = 0; j < rows1; j++) {
-			if (mass[i][j] == 0) {
+			if (mass[i][j] == -0) {
 				cout << 0 << "	";
 			}
 			else {
