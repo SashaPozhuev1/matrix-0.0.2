@@ -21,7 +21,7 @@ bool create(float ** matrix1, unsigned int &rows1, unsigned int &columns1, strin
 			}
 		}
 	}
-	
+
 	return prav;
 }
 
@@ -48,28 +48,28 @@ bool write(float ** matrix1, unsigned int &rows1, unsigned int &columns1) {
 	return true;
 }
 
-bool add(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &columns1) {
+float **add(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &columns1) {
 	for (int i = 0; i < rows1; i++) {
 		for (int j = 0; j < columns1; j++) {
 			matrix1[i][j] += matrix2[i][j];
 		}
 	}
-	return true;
+	return matrix1;
 }
 
-bool sub(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &columns1) {
+float **sub(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &columns1) {
 	for (int i = 0; i < rows1; i++) {
 		for (int j = 0; j < columns1; j++) {
 			matrix1[i][j] -= matrix2[i][j];
 		}
 	}
-	return true;
+	return matrix1;
 }
 
-bool mul(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &columns1){
+float **mul(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &columns1) {
 	int kol, min, schet = 0;
 	kol = rows1 * columns1;
-	
+
 	if (columns1 < rows1) {
 		min = columns1;
 	}
@@ -85,13 +85,13 @@ bool mul(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &
 
 	//заполняем его значениями итогого массива
 	for (int i = 0; i < rows1; i++) {
-		for (int j = 0; j < columns1; j++) {		
+		for (int j = 0; j < columns1; j++) {
 			for (int k = 0; k < min; k++) {
 				mass[schet] += matrix1[i][k] * matrix2[k][j];
 			}
-			
+
 			schet++;
-		}	
+		}
 	}
 
 	schet = 0;
@@ -103,10 +103,10 @@ bool mul(float ** matrix1, float ** matrix2, unsigned int &rows1, unsigned int &
 		}
 	}
 
-	return true;
+	return matrix1;
 }
 
-bool trans(float ** mass, float ** matrix1, unsigned int &rows1, unsigned int &columns1) {
+float **trans(float ** mass, float ** matrix1, unsigned int &rows1, unsigned int &columns1) {
 	for (int i = 0; i < columns1; i++) {
 		mass[i] = new float[rows1];
 		for (int j = 0; j < rows1; j++) {
@@ -121,11 +121,11 @@ bool trans(float ** mass, float ** matrix1, unsigned int &rows1, unsigned int &c
 		}
 		cout << '\n';
 	}
-	
-	return true;
+
+	return mass;
 }
 
-bool revers(float ** mass, float ** matrix1, unsigned int &rows1) {
+float **revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 
 	int i, j, k;
 
@@ -134,8 +134,8 @@ bool revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 		mass[i] = new float[rows1];
 
 		for (j = 0; j < rows1; j++) {
-				mass[i][j] = 0;
-				mass[i][i] = 1;
+			mass[i][j] = 0;
+			mass[i][i] = 1;
 		}
 	}
 
@@ -155,9 +155,9 @@ bool revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 	}
 
 	float result;
-	
+
 	for (i = 0; i < rows1; i++) {
-		for (j = rows1 - 1; j > - 1; j--) {
+		for (j = rows1 - 1; j > -1; j--) {
 			result = 0;
 
 			for (k = rows1 - 1; k > j; k--) {
@@ -165,8 +165,8 @@ bool revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 
 				if (matrix1[j][j] == 0) {
 					for (i = 0; i < rows1; i++) {
-						delete [] mass[i];
-						delete [] mass;
+						delete[] mass[i];
+						delete[] mass;
 					}
 				}
 			}
@@ -183,9 +183,41 @@ bool revers(float ** mass, float ** matrix1, unsigned int &rows1) {
 		cout << '\n';
 	}
 
+	return mass;
+}
+/*
+bool myrevers(float ** mass, float ** matrix1, unsigned int &rows1) {
+	int  schet = 0;
+
+	int i, j, k;
+
+	/////////новая матрица
+	for (i = 0; i < rows1; i++) {			//1 0 0
+		mass[i] = new float[rows1];			//0 1 0
+											//0 0 1
+		for (j = 0; j < rows1; j++) {
+			mass[i][j] = 0;
+			mass[i][i] = 1;
+		}
+	}
+
+	float ** matrix = new float *[rows1];
+
+	//заполняем его значениями итогого массива
+	for (int i = 0; i < rows1; i++) {
+		for (int j = 0; j < rows1; j++) {
+			for (int k = 0; k < rows1; k++) {
+				mass[i][j] = mass[i][j] + (matrix1[i][k] * matrix[k][j]);
+			}
+
+			schet++;
+		}
+	}
+
+	schet = 0;
 	return true;
 }
-
+*/
 void error() {
 	cout << '\n' << "An error has occured while reading input data";
 }
@@ -194,13 +226,13 @@ int main()
 {
 	char znak, symb;
 	bool prav = true;
-	
+
 	unsigned int rows1 = 0;
 	unsigned int columns1 = 0;
 
 	unsigned int rows2 = 0;
 	unsigned int columns2 = 0;
-	
+
 	string stroka;
 
 	read(stroka, rows1, symb, columns1);
@@ -208,7 +240,7 @@ int main()
 	if (symb == ',') {
 
 		float ** matrix1 = new float *[rows1];
-		
+
 		create(matrix1, rows1, columns1, stroka, prav);
 		if (prav == true) {
 
@@ -222,20 +254,20 @@ int main()
 				if (symb == ',') {
 					float ** matrix2 = new float *[rows2];
 					create(matrix2, rows2, columns2, stroka, prav);
-					
+
 					if (prav == true) {
 						if ((znak == '+') && (rows1 == rows2) && (columns1 == columns2)) {
-							add(matrix1, matrix2, rows1, columns1);
+							matrix1 = add(matrix1, matrix2, rows1, columns1);
 							write(matrix1, rows1, columns1);
 						}
 
 						else if ((znak == '-') && (rows1 == rows2) && (columns1 == columns2)) {
-							sub(matrix1, matrix2, rows1, columns1);
+							matrix1 = sub(matrix1, matrix2, rows1, columns1);
 							write(matrix1, rows1, columns1);
 						}
 
 						else if ((znak == '*') && (rows1 == rows2) && (columns1 == columns2)) {
-							mul(matrix1, matrix2, rows1, columns1);
+							matrix1 = mul(matrix1, matrix2, rows1, columns1);
 							write(matrix1, rows1, columns1);
 						}
 
@@ -247,17 +279,17 @@ int main()
 						error();
 					}
 				}
-				
+
 			}
 
 			else if (znak == 'T') {
 				float **mass = new float *[columns1];
-				trans(mass, matrix1, rows1, columns1);
+				mass = trans(mass, matrix1, rows1, columns1);
 			}
 
 			else if ((znak == 'R') && (rows1 == columns1)) {
 				float **mass = new float *[columns1];
-				revers(mass, matrix1, rows1);
+				mass = revers(mass, matrix1, rows1);
 			}
 
 			else {
@@ -273,6 +305,6 @@ int main()
 	}
 
 	cin.get();
-    return 0;
+	return 0;
 
-	}
+}
