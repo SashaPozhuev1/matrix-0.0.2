@@ -3,7 +3,7 @@
 
 using namespace std;
 
-bool create(float ** & matrix, 
+bool create(float **& matrix, 
 			unsigned int &rows, 
 			unsigned int &columns,
 			string &stroka) 
@@ -55,8 +55,7 @@ bool write(float ** matrix, unsigned int rows, unsigned int columns) {
 	cout << '\n';
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-			
-            if (matrix[i][j] == -0.0f) {
+			if (matrix[i][j] == -0.0f) {
 				cout << 0.0f << "	";
 			}
 			else {
@@ -114,17 +113,15 @@ void mul(float ** matrix1, float ** matrix2, float ** & matrix3, unsigned int ro
 
 void trans(float ** & matrix3, float ** matrix1, unsigned int rows, unsigned int columns) {
 	matrix3 = new float *[columns];
-	
-    for (int i = 0; i < columns; i++) {
+	for (int i = 0; i < columns; i++) {
 		matrix3[i] = new float[rows];
-		
-        for (int j = 0; j < rows; j++) {
+		for (int j = 0; j < rows; j++) {
 			matrix3[i][j] = matrix1[j][i];
 		}
 	}
 }
 
-void revers(float ** & matrix3, float ** & matrix1, unsigned int rows) {
+void revers(float ** & matrix3, float ** & matrix1, unsigned int rows, bool &prav) {
 
 	int i, j, k;
 
@@ -164,6 +161,12 @@ void revers(float ** & matrix3, float ** & matrix1, unsigned int rows) {
 			}
 
 			matrix3[j][i] = (matrix3[j][i] - result) / matrix1[j][j];
+			// добавил сравнение
+			if (matrix3[i][j] == numeric_limits<float>::quiet_NaN() ||
+				matrix3[i][j] == numeric_limits<float>::infinity()) {
+				prav = false;
+			}
+
 		}
 	}
 }  
@@ -251,8 +254,15 @@ int main()
 			}
 
 			else if ((znak == 'R') && (rows1 == columns1)) {
-				revers(matrix3, matrix1, rows1);
-				write(matrix3, rows1, columns1);
+
+				revers(matrix3, matrix1, rows1, prav);
+
+				if (prav == true) {
+					write(matrix3, rows1, columns1);
+				}
+				else {
+					cout << "There is no reverse matrix.";
+				}
 
 				destroy(matrix1, rows1);
 				destroy(matrix3, rows1);
