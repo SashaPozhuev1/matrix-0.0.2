@@ -121,7 +121,7 @@ void trans(float ** & matrix3, float ** matrix1, unsigned int rows, unsigned int
 	}
 }
 
-void revers(float ** & matrix3, float ** & matrix1, unsigned int rows, bool &prav) {
+void revers(float ** & matrix3, float ** & matrix1, unsigned int rows) {
 
 	int i, j, k;
 
@@ -161,12 +161,6 @@ void revers(float ** & matrix3, float ** & matrix1, unsigned int rows, bool &pra
 			}
 
 			matrix3[j][i] = (matrix3[j][i] - result) / matrix1[j][j];
-			// добавил сравнение
-			if (matrix3[i][j] == numeric_limits<float>::quiet_NaN() ||
-				matrix3[i][j] == numeric_limits<float>::infinity()) {
-				prav = false;
-			}
-
 		}
 	}
 }  
@@ -255,14 +249,8 @@ int main()
 
 			else if ((znak == 'R') && (rows1 == columns1)) {
 
-				revers(matrix3, matrix1, rows1, prav);
-
-				if (prav == true) {
-					write(matrix3, rows1, columns1);
-				}
-				else {
-					cout << "There is no reverse matrix.";
-				}
+				revers(matrix3, matrix1, rows1);
+				write(matrix3, rows1, columns1);
 
 				destroy(matrix1, rows1);
 				destroy(matrix3, rows1);
